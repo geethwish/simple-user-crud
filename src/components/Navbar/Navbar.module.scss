@@ -1,0 +1,24 @@
+@import "../../asset/styles/variables.scss";
+
+.nav {
+  background-color: $primary;
+  color: $light;
+}
+
+.nav a {
+  color: $light;
+}
+
+.nav a:hover {
+  color: $gray !important;
+}
+
+.active {
+  font-weight: 500;
+  color: $white;
+}
+
+.active {
+  font-weight: 600;
+  color: $white !important;
+}
