@@ -23,7 +23,15 @@ const NavbarComponent = () => {
                     <Nav navbar >
 
                         <NavItem>
+
                             <NavLink href="/" className={styles.active}>Home</NavLink>
+
+                        </NavItem>
+
+                        <NavItem>
+
+                            <NavLink href="/clients" className={styles.active}>Clients</NavLink>
+
                         </NavItem>
 
                     </Nav>
