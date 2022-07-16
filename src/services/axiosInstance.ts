@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((config) => {
     const headers = {
-        'content-type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'multipart/form-data'
     }
     config.headers = headers || {};
     return config;

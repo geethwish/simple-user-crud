@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { fetchClients, saveClientsDetails } from '../../services/clientsAPI';
+import { deleteClientRecord, fetchClients, saveClientsDetails } from '../../services/clientsAPI';
+import { getClients } from './clientsSlice';
 
 export interface ClientObject {
     name: string,
@@ -34,7 +35,6 @@ export const saveClient = createAsyncThunk(
     }
 );
 
-
 export const clientSlice = createSlice({
     name: 'client',
     initialState,
@@ -56,6 +56,7 @@ export const clientSlice = createSlice({
             .addCase(saveClient.rejected, (state) => {
                 state.status = 'failed';
             });
+
     },
 });
 

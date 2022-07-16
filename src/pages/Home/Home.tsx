@@ -16,7 +16,7 @@ const Home = () => {
     const [form, setForm] = useState({
         name: '',
         amount: '',
-        image: 'test'
+        image: {}
     })
 
     const notify = () => toast.success("New Client Details Added!");
@@ -32,11 +32,37 @@ const Home = () => {
         setForm({ ...form, [id]: value })
 
     }
+
+
+    const imageUploadHandle = (e: any) => {
+
+        const selected = e.target.files[0];
+
+        const objectUrl = URL.createObjectURL(selected)
+
+        setForm({ ...form, image: objectUrl })
+
+
+    }
+
     const formHandler = (e: any) => {
 
         e.preventDefault();
 
-        dispatch(saveClient(form))
+        const data: any = new FormData(e.currentTarget);
+
+        const bodyFormData = new FormData();
+
+        const name = data.get('name');
+        const amount = data.get('amount');
+        const image = data.get('image');
+
+        bodyFormData.append("name", name);
+        bodyFormData.append("amount", amount);
+        bodyFormData.append("image", image);
+
+
+        dispatch(saveClient(bodyFormData))
 
     }
 
@@ -111,7 +137,7 @@ const Home = () => {
 
                                 <Label for="exampleFile">Image</Label>
 
-                                <Input type="file" name="file" id="exampleFile" />
+                                <Input type="file" name="image" id="exampleFile" onChange={imageUploadHandle} />
 
                             </FormGroup>
 

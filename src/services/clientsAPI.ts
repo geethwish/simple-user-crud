@@ -4,7 +4,7 @@ import qs from "qs";
 
 export function fetchClients() {
 
-    return new Promise<{ data: number }>((resolve, reject) =>
+    return new Promise((resolve, reject) =>
 
         setTimeout(() => {
             axiosInstance.get('clients').then((response) => {
@@ -22,13 +22,57 @@ export function fetchClients() {
 }
 
 
-export function saveClientsDetails(data: any) {
+export function saveClientsDetails(client: any) {
 
-    return new Promise<{ data: number }>((resolve, reject) =>
+    return new Promise((resolve, reject) =>
 
         setTimeout(() => {
 
-            axiosInstance.post('clients', qs.stringify({ ...data })).then((response) => {
+
+            axiosInstance.post('clients', client).then((response) => {
+
+                resolve(response.data)
+
+            }).catch((error) => {
+
+                reject(error);
+
+            })
+
+        }, 3000)
+    )
+
+}
+
+
+export function deleteClientRecord(id: any) {
+
+    return new Promise((resolve, reject) =>
+
+        setTimeout(() => {
+
+            axiosInstance.delete(`clients/${id}`).then((response) => {
+
+                resolve(response.data)
+
+            }).catch((error) => {
+
+                reject(error);
+
+            })
+
+        }, 3000)
+    )
+
+}
+
+export function updateClientRecord(client: any) {
+
+    return new Promise((resolve, reject) =>
+
+        setTimeout(() => {
+
+            axiosInstance.put(`clients/${client.id}`, client.data).then((response) => {
 
                 resolve(response.data)
 
