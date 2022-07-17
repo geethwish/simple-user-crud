@@ -1,18 +1,22 @@
 import axiosInstance from "./axiosInstance";
-import qs from "qs";
 
 
 export function fetchClients() {
 
     return new Promise((resolve, reject) =>
 
+        // waiting fes mil-sec
         setTimeout(() => {
+
+            // request client from backend
             axiosInstance.get('clients').then((response) => {
 
-                resolve(response.data)
+                // return the response
+                resolve(response.data);
 
             }).catch((error) => {
 
+                // send error
                 reject(error);
 
             })
@@ -26,8 +30,9 @@ export function saveClientsDetails(client: any) {
 
     return new Promise((resolve, reject) =>
 
-        setTimeout(() => {
+        // waiting fes mil-sec
 
+        setTimeout(() => {
 
             axiosInstance.post('clients', client).then((response) => {
 
@@ -44,6 +49,7 @@ export function saveClientsDetails(client: any) {
 
 }
 
+// handle delete client
 
 export function deleteClientRecord(id: any) {
 
@@ -65,6 +71,8 @@ export function deleteClientRecord(id: any) {
     )
 
 }
+
+// handle update clients
 
 export function updateClientRecord(client: any) {
 

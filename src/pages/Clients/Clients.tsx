@@ -3,42 +3,51 @@ import { useEffect, useState } from 'react';
 import { Button, Card, CardBody, CardHeader, CardTitle, Container, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Table } from 'reactstrap';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import Swal from 'sweetalert2'
-
-import Loader from '../../components/Loader/Loader';
+import { toast } from 'react-toastify';
+import baseURL from '../../services/baseURL';
 import { allClients, getClients, deleteClient, resetStatus, updateClient } from '../../redux/Clients/clientsSlice';
 
+// components
+import Loader from '../../components/Loader/Loader';
+
+// icons
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
+// styles
 import styles from './Clients.module.scss';
-import { toast } from 'react-toastify';
-
 
 const Clients = () => {
 
     const clientsList: any = useAppSelector(allClients);
 
+    const baseurl = baseURL();
+
     const dispatch = useAppDispatch();
 
     useEffect(() => {
 
+        // fetch clients list
         dispatch(getClients());
 
     }, []);
 
+    // handle show update modal
     const [showForm, setShowForm] = useState(false);
 
-
+    // selected form
     const [form, setForm]: any = useState({
         name: '',
         amount: '',
         image: 'test'
     });
 
-
+    // handle success message
     const notify = () => toast.success("Client Updated");
 
+    // handle error message
     const notifyError = () => toast.error("Something Went Wrong!");
 
+    // handle input fields changes
     const inputHandler = (e: any) => {
 
         const id = e.target.id;
@@ -48,14 +57,18 @@ const Clients = () => {
         setForm({ ...form, [id]: value })
 
     }
+
+    // handle form submit
     const formHandler = (e: any) => {
 
+        // disable default behavior
         e.preventDefault();
 
+        // create form data object
         const data: any = new FormData(e.currentTarget);
-
         const bodyFormData = new FormData();
 
+        // assign values form above defined objects
         const name = data.get('name');
         const amount = data.get('amount');
         const image = data.get('image');
@@ -63,15 +76,15 @@ const Clients = () => {
         bodyFormData.append("amount", amount);
         bodyFormData.append("image", image);
 
-
-        console.log(bodyFormData);
-
+        // request for client update
         dispatch(updateClient({ id: form._id, data: bodyFormData }));
 
+        // close modal
         setShowForm(false);
 
     }
 
+    // handle open and close modal
     const handleModalOpen = (client: any) => {
 
         setForm({ ...client });
@@ -80,7 +93,7 @@ const Clients = () => {
 
     }
 
-
+    // handle client record delete
     const deleteClientHandler = (id: any) => Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -92,6 +105,7 @@ const Clients = () => {
     }).then((result) => {
         if (result.isConfirmed) {
 
+            // send request for delete client record
             dispatch(deleteClient(id));
 
         }
@@ -99,20 +113,24 @@ const Clients = () => {
 
     useEffect(() => {
 
+        // check api status
         if (clientsList && clientsList.status === 'deleted') {
 
+            // show delete success message
             Swal.fire(
                 'Deleted!',
                 'Your file has been deleted.',
                 'success'
-            )
+            );
 
+            // reset the api status
             dispatch(resetStatus());
 
         }
 
         if (clientsList && clientsList.status === 'updated') {
 
+            // show update success message
             notify()
 
             dispatch(resetStatus());
@@ -121,6 +139,7 @@ const Clients = () => {
 
         if (clientsList && clientsList.status === 'error') {
 
+            // show error message
             notifyError()
 
             dispatch(resetStatus());
@@ -129,6 +148,7 @@ const Clients = () => {
 
     }, [clientsList])
 
+    // show loader
     if (clientsList && clientsList.status === 'loading') {
 
         return <Loader />
@@ -138,15 +158,22 @@ const Clients = () => {
             <Container>
 
                 <Card className="mt-5 mb-3">
-                    <CardHeader>
+
+                    <CardHeader className={styles.cardHeader}>
+
                         <CardTitle>
+
                             <h3 className='mt-3 mb-3'>
                                 Clients
                             </h3>
+
                         </CardTitle>
+
                     </CardHeader>
+
                     <CardBody>
-                        <Table hover striped borderless>
+
+                        <Table hover striped borderless responsive>
 
                             <thead>
 
@@ -155,7 +182,7 @@ const Clients = () => {
                                     <th>Name</th>
                                     <th>Amount</th>
                                     <th>Image</th>
-                                    <th style={{ width: 150 }}></th>
+                                    <th></th>
                                 </tr>
 
                             </thead>
@@ -165,15 +192,29 @@ const Clients = () => {
                                 {
                                     clientsList && clientsList.clients && clientsList.clients.length > 0 &&
                                     clientsList.clients.map((client: any, index: number) => {
-                                        return <tr key={index}>
+                                        return <tr key={index} className={styles.center}>
+
                                             <th scope="row">{index + 1}</th>
+
                                             <td>{client.name} </td>
+
                                             <td>{client.amount}</td>
-                                            <td>{client.image}</td>
-                                            <td >
+
+                                            <td>
+                                                <div className={styles.imageWrapper}>
+                                                    <a href={`${baseurl}${client.image}`} target="_blank" rel="noreferrer" className={styles.img}>
+                                                        <img src={`${baseurl}${client.image}`} alt={client.name} className={styles.image} />
+                                                    </a>
+
+                                                </div>
+
+                                            </td>
+
+                                            <td className={styles.smallTH}>
                                                 <Button color="primary" onClick={() => handleModalOpen(client)}><FaEdit /></Button>{' '}
                                                 <Button color="danger" onClick={() => deleteClientHandler(client._id)}><FaTrash /></Button>{' '}
                                             </td>
+
                                         </tr>
                                     }
                                     )
@@ -234,25 +275,32 @@ const Clients = () => {
 
                             </FormGroup>
 
-
                         </ModalBody>
+
                         <ModalFooter>
+
                             <Button
                                 color="primary"
                                 type='submit'
                             >
                                 Update
                             </Button>{' '}
+
                             <Button
                                 color="secondary"
                                 onClick={() => setShowForm(!showForm)}
                             >
                                 Cancel
                             </Button>
+
                         </ModalFooter>
+
                     </Form>
+
                 </Modal>
+
             </Container>
+
         </div>
     )
 }

@@ -9,20 +9,25 @@ import styles from './Home.module.scss';
 
 const Home = () => {
 
+    //get client details api details
     const clientDetail: any = useAppSelector(clientDetails);
 
     const dispatch = useAppDispatch()
 
+    // initial form
     const [form, setForm] = useState({
         name: '',
         amount: '',
         image: {}
     })
 
+    // show success message
     const notify = () => toast.success("New Client Details Added!");
 
+    // show error message
     const notifyError = () => toast.error("Something Went Wrong!");
 
+    // handle input
     const inputHandler = (e: any) => {
 
         const id = e.target.id;
@@ -33,40 +38,29 @@ const Home = () => {
 
     }
 
-
-    const imageUploadHandle = (e: any) => {
-
-        const selected = e.target.files[0];
-
-        const objectUrl = URL.createObjectURL(selected)
-
-        setForm({ ...form, image: objectUrl })
-
-
-    }
-
+    // handle form submit
     const formHandler = (e: any) => {
 
         e.preventDefault();
 
         const data: any = new FormData(e.currentTarget);
-
         const bodyFormData = new FormData();
 
         const name = data.get('name');
         const amount = data.get('amount');
         const image = data.get('image');
-
         bodyFormData.append("name", name);
         bodyFormData.append("amount", amount);
         bodyFormData.append("image", image);
 
-
+        // send request to create new client
         dispatch(saveClient(bodyFormData))
 
     }
 
     useEffect(() => {
+
+        // check api status and show messages according to status
 
         if (clientDetail.status === 'success') {
 
@@ -84,6 +78,7 @@ const Home = () => {
     }, [clientDetail])
 
 
+    // show loader
     if (clientDetail && clientDetail.status === 'loading') {
 
         return <Loader />
@@ -99,7 +94,7 @@ const Home = () => {
 
                     <Form onSubmit={formHandler}>
 
-                        <CardHeader>User Form</CardHeader>
+                        <CardHeader className={styles.cardHeader}>Client Form</CardHeader>
 
                         <CardBody>
 
@@ -137,7 +132,7 @@ const Home = () => {
 
                                 <Label for="exampleFile">Image</Label>
 
-                                <Input type="file" name="image" id="exampleFile" onChange={imageUploadHandle} />
+                                <Input type="file" name="image" id="exampleFile" />
 
                             </FormGroup>
 
@@ -145,7 +140,7 @@ const Home = () => {
 
                         <CardFooter>
 
-                            <Button type='submit'>Submit</Button>
+                            <Button type='submit' color='primary'>Save Client</Button>
 
                         </CardFooter>
 

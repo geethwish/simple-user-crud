@@ -1,7 +1,6 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { deleteClientRecord, fetchClients, saveClientsDetails } from '../../services/clientsAPI';
-import { getClients } from './clientsSlice';
+import { saveClientsDetails } from '../../services/clientsAPI';
 
 export interface ClientObject {
     name: string,
@@ -24,12 +23,7 @@ export const saveClient = createAsyncThunk(
     'client/saveClient',
     async (data: any) => {
 
-        console.log(data);
-
         const response = await saveClientsDetails(data);
-        // // The value we return becomes the `fulfilled` action payload
-
-        console.log(response);
 
         return response;
     }
@@ -62,8 +56,6 @@ export const clientSlice = createSlice({
 
 export const { rest } = clientSlice.actions;
 
-
 export const clientDetails = (state: RootState) => state.client;
-
 
 export default clientSlice.reducer;

@@ -1,0 +1,32 @@
+@import "../../asset/styles/variables.scss";
+.smallTH {
+  width: 10rem !important;
+}
+
+.cardHeader {
+  background-color: $primary !important;
+  color: $white;
+  font-size: 1.5rem;
+}
+
+.imageWrapper {
+  width: 6rem;
+}
+
+.img {
+  margin-bottom: 0px;
+}
+
+.image {
+  width: 100%;
+}
+
+.center th,
+td {
+  vertical-align: baseline;
+}
+@media screen and (max-width: 575.98px) {
+  .smallTH {
+    min-width: 8rem !important;
+  }
+}

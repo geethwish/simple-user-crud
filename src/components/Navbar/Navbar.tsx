@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 import classNames from 'classnames';
+
 import styles from './Navbar.module.scss';
 
 const NavbarComponent = () => {
@@ -8,6 +9,9 @@ const NavbarComponent = () => {
     const [collapsed, setCollapsed] = useState(true);
 
     const toggleNavbar = () => setCollapsed(!collapsed);
+
+    // get pathname
+    const pathname = window.location.pathname;
 
     return (
         <div className={styles.nav}>
@@ -24,13 +28,13 @@ const NavbarComponent = () => {
 
                         <NavItem>
 
-                            <NavLink href="/" className={styles.active}>Home</NavLink>
+                            <NavLink href="/" className={pathname === "/" ? styles.active : ''}>Home</NavLink>
 
                         </NavItem>
 
                         <NavItem>
 
-                            <NavLink href="/clients" className={styles.active}>Clients</NavLink>
+                            <NavLink href="/clients" className={pathname === "/clients" ? styles.active : ''}>Clients</NavLink>
 
                         </NavItem>
 

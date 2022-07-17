@@ -1,3 +1,5 @@
+@import "../../asset/styles/variables.scss";
+
 .formContainer {
   display: flex;
   justify-content: center;
@@ -7,4 +9,52 @@
 
 .cardWrapper {
   width: 40rem;
+}
+
+.cardHeader {
+  background-color: $primary !important;
+  color: $white;
+  font-size: 1.5rem;
+}
+
+@media screen and (max-width: 575.98px) {
+  .formContainer {
+    height: fit-content;
+    align-items: flex-start;
+  }
+  .cardWrapper {
+    width: 100%;
+    padding: 1.2rem;
+    margin-top: 1.5rem;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+  .formContainer {
+    height: fit-content;
+    align-items: flex-start;
+  }
+  .cardWrapper {
+    width: 100%;
+    padding: 1.2rem;
+    margin-top: 1.5rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 991.98px) {
+  .formContainer {
+    height: fit-content;
+    align-items: flex-start;
+  }
+  .cardWrapper {
+    width: 100%;
+    padding: 4rem;
+    margin-top: 1.5rem;
+  }
+}
+
+@media (min-width: 992px) and(max-width: 1199.98px) {
+}
+
+@media (min-width: 1200px) {
 }

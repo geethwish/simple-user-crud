@@ -1,10 +1,16 @@
 import axios from 'axios';
+import baseURL from './baseURL';
 
+const baseurl = baseURL();
+
+// set  base url for api request
 const axiosInstance = axios.create({
-    baseURL: `http://localhost:8050/api/`,
+    baseURL: `${baseurl}api/`,
 });
 
+
 axiosInstance.interceptors.request.use((config) => {
+    // set headers
     const headers = {
         'Content-Type': 'multipart/form-data'
     }
